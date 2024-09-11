@@ -1,0 +1,29 @@
+#include <cs50.h>
+#include <stdio.h>
+
+void printManyTimes(string s, int n)
+{
+    for (int c = 0; c < n; c++)
+    {
+        printf("%s", s);
+    }
+}
+
+int main(void)
+{
+    int h;
+    do
+    {
+        h = get_int("Please enter height: ");
+    }
+    while (h < 1 || 8 < h);
+
+    for (int row = 0; row < h; row++)
+    {
+        printManyTimes(" ", h - row - 1);
+        printManyTimes("#", row + 1);
+        printManyTimes(" ", 2);
+        printManyTimes("#", row + 1);
+        printf("\n");
+    }
+}
