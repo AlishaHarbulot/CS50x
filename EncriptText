@@ -1,0 +1,63 @@
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+string convert_to_ciphertext(string plaintext, string key);
+
+int main(int argc, string argv[])
+{
+    if (argc != 2) // if argc for exactly one argument
+    {
+        printf("Incorrect Input.\n"); // send error message
+        return 1;
+    }
+    if (strlen(argv[1]) != 26) // if key is not 26 characters long exactly
+    {
+        printf("Key must contain 26 characters.\n"); // send error message
+        return 1;
+    }
+    for (int i = 0; i < 26; i++) // loop to check all characters are alphabetic and unique
+    {
+        if (!isalpha(argv[1][i])) // check for non-alphabetic characters
+        {
+            printf("Key must only contain alphabetic characters.\n"); // send error message
+            return 1;
+        }
+        for (int j = i + 1; j < 26; j++) // in loop-loop to check for duplicates
+        {
+            if (tolower(argv[1][i]) ==
+                tolower(argv[1][j])) // convert all to lower to make it case-insenstive
+            {
+                printf("Key must not contain duplicate characters.\n");
+                return 1;
+            }
+        }
+    }
+    string plaintext = get_string("plaintext: "); // get the input text
+    string ciphered = convert_to_ciphertext(plaintext, argv[1]); // converts plain text to ciphertext
+    printf("ciphertext: %s\n", ciphered);
+    return 0;
+}
+
+string convert_to_ciphertext(string plaintext, string key) // encrypting function
+{
+    string ciphertext = plaintext; // the string that will store store the result
+    for (int i = 0, n = strlen(plaintext); i < n; i++) // loop through the input
+    {
+        if (isupper(plaintext[i])) // if the ith character is uppercased
+        {
+            ciphertext[i] = toupper(key[plaintext[i] - 'A']); // keep the upper key and substitute using the key
+        }
+        else if (islower(plaintext[i])) // if character is lowercased
+        {
+            ciphertext[i] = tolower(key[plaintext[i] - 'a']); // keep it lower and substitute using the key
+        }
+        else
+        {
+            ciphertext[i] = plaintext[i]; // leave non alphabetical characters as is
+        }
+    }
+    return ciphertext;
+}
